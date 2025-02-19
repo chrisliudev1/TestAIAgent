@@ -106,7 +106,7 @@ async def run_agent_with_streaming(user_input: str):
 
 async def main():
     st.title("eBaum's World AI Agentic RAG")
-    st.write("Ask any question about eBaums' World, the place for all funny pictures and funny videos on the internet.")
+    st.write("Ask a question about eBaums' World Galleries.")
 
     # Initialize chat history in session state if not present
     if "messages" not in st.session_state:
@@ -121,7 +121,7 @@ async def main():
                 display_message_part(part)
 
     # Chat input for the user
-    user_input = st.chat_input("What questions do you have about eBaum's?")
+    user_input = st.chat_input("What questions do you have about eBaum's World Galleries?")
 
     if user_input:
         # We append a new request to the conversation explicitly
