@@ -26,8 +26,8 @@ class PydanticAIDeps:
     openai_client: AsyncOpenAI
 
 system_prompt = """
-You are an expert at Pydantic AI - a Python AI agent framework that you have access to all the documentation to,
-including examples, an API reference, and other resources to help you build Pydantic AI agents.
+You are an expert at eBaum's World AI - a Python AI agent framework that you have access to all the documentation to,
+including articles and galleries, and other resources to help you understand AI Agents.
 
 Your only job is to assist with this and you don't answer other questions besides describing what you are able to do.
 
@@ -80,7 +80,7 @@ async def retrieve_relevant_documentation(ctx: RunContext[PydanticAIDeps], user_
             {
                 'query_embedding': query_embedding,
                 'match_count': 5,
-                'filter': {'source': 'pydantic_ai_docs'}
+                'filter': {'source': 'ebw_ai_docs'}
             }
         ).execute()
         
@@ -114,9 +114,9 @@ async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]
     """
     try:
         # Query Supabase for unique URLs where source is pydantic_ai_docs
-        result = ctx.deps.supabase.from_('site_pages') \
+        result = ctx.deps.supabase.from_('ebw_site_pages') \
             .select('url') \
-            .eq('metadata->>source', 'pydantic_ai_docs') \
+            .eq('metadata->>source', 'ebw_ai_docs') \
             .execute()
         
         if not result.data:
@@ -127,13 +127,13 @@ async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]
         return urls
         
     except Exception as e:
-        print(f"Error retrieving documentation pages: {e}")
+        print(f"Error retrieving media pages: {e}")
         return []
 
 @pydantic_ai_expert.tool
 async def get_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> str:
     """
-    Retrieve the full content of a specific documentation page by combining all its chunks.
+    Retrieve the full content of a specific media page by combining all its chunks.
     
     Args:
         ctx: The context including the Supabase client
@@ -144,10 +144,10 @@ async def get_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> str:
     """
     try:
         # Query Supabase for all chunks of this URL, ordered by chunk_number
-        result = ctx.deps.supabase.from_('site_pages') \
+        result = ctx.deps.supabase.from_('ebw_site_pages') \
             .select('title, content, chunk_number') \
             .eq('url', url) \
-            .eq('metadata->>source', 'pydantic_ai_docs') \
+            .eq('metadata->>source', 'ebw_ai_docs') \
             .order('chunk_number') \
             .execute()
         
