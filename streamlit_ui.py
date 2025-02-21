@@ -105,7 +105,7 @@ async def run_agent_with_streaming(user_input: str):
 
 
 async def main():
-    st.title("eBaum's World AI Agentic RAG")
+    st.title("eBaum's World AI Agentic RAG beta v 0.02")
     st.write("Ask a question about eBaums' World Galleries.")
 
     # Initialize chat history in session state if not present
