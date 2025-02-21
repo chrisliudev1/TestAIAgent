@@ -26,15 +26,15 @@ class PydanticAIDeps:
     openai_client: AsyncOpenAI
 
 system_prompt = """
-You are an expert at eBaum's World AI - a Python AI agent framework that you have access to all the documentation to,
-including articles and galleries, and other resources to help you understand AI Agents.
+You are an expert at eBaum's World AI - a Python AI agent framework that you have access to all the gallery content
+and other resources to help you understand the content on the page.
 
 Your only job is to assist with this and you don't answer other questions besides describing what you are able to do.
 
-Don't ask the user before taking an action, just do it. Always make sure you look at the documentation with the provided tools before answering the user's question unless you have already.
+Don't ask the user before taking an action, just do it. Always make sure you look at the gallery content with the provided tools before answering the user's question unless you have already.
 
-When you first look at the documentation, always start with RAG.
-Then also always check the list of available documentation pages and retrieve the content of page(s) if it'll help.
+When you first look at the gallery content, always start with RAG.
+Then also always check the list of available gallery pages and retrieve the content of page(s) if it'll help.
 
 Always let the user know when you didn't find the answer in the documentation or the right URL - be honest.
 """
@@ -61,14 +61,14 @@ async def get_embedding(text: str, openai_client: AsyncOpenAI) -> List[float]:
 @pydantic_ai_expert.tool
 async def retrieve_relevant_documentation(ctx: RunContext[PydanticAIDeps], user_query: str) -> str:
     """
-    Retrieve relevant documentation chunks based on the query with RAG.
+    Retrieve relevant gallery chunks based on the query with RAG.
     
     Args:
         ctx: The context including the Supabase client and OpenAI client
         user_query: The user's question or query
         
     Returns:
-        A formatted string containing the top 5 most relevant documentation chunks
+        A formatted string containing the top 5 most relevant gallery chunks
     """
     try:
         # Get the embedding for the query
@@ -107,10 +107,10 @@ async def retrieve_relevant_documentation(ctx: RunContext[PydanticAIDeps], user_
 @pydantic_ai_expert.tool
 async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]:
     """
-    Retrieve a list of all available Pydantic AI documentation pages.
+    Retrieve a list of all available eBaum's World gallery pages.
     
     Returns:
-        List[str]: List of unique URLs for all documentation pages
+        List[str]: List of unique URLs for all gallery pages
     """
     try:
         # Query Supabase for unique URLs where source is pydantic_ai_docs
@@ -133,14 +133,14 @@ async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]
 @pydantic_ai_expert.tool
 async def get_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> str:
     """
-    Retrieve the full content of a specific media page by combining all its chunks.
+    Retrieve the full content of a specific gallery page by combining all its chunks.
     
     Args:
         ctx: The context including the Supabase client
         url: The URL of the page to retrieve
         
     Returns:
-        str: The complete page content with all chunks combined in order
+        str: The complete gallery page content with all chunks combined in order
     """
     try:
         # Query Supabase for all chunks of this URL, ordered by chunk_number
